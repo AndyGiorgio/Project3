@@ -3,33 +3,26 @@ import { Button, TouchableOpacity, FlatList, StyleSheet, Text, View } from 'reac
 
 const ListOfCategories = ({ route, navigation }) => {
 
-const startingDataSource = [
+const categorys = [
     { category: "Math" },
     { category: "Science" },
-    { categroy: "History" },
+    { category: "History" },
     { category: "Geography" },
   ];
 
-  const [categories, setCategory] = useState(startingDataSource);
-  useEffect(()=>{
-        if(route.params){
-          setCategory(categories.concat(json.categories));
-        }
-      }, [route.params]);
-         
   return (
     <View style={styles.container}>
-                <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                data={categories}
-                renderItem={({item}) => 
-                <TouchableOpacity onPress={() => navigation.navigate('Questions')}>
-                  <View style={styles.border}>
-                    <Text style={styles.item}>{item.title}</Text>
-                  </View>
-                </TouchableOpacity>
-                } />
-            </View>
+      <FlatList
+        data={categorys}
+        renderItem={({item}) =>   
+          <View style = {styles.border}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Questions",item.category)}>
+            <Text style={styles.item}>{item.category} </Text>
+            </TouchableOpacity>
+          </View> 
+        }
+      />
+    </View>
   );
 }
 

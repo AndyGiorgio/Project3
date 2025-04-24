@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const Questions = ({ route, navigation }) => {
-    const { title, releaseYear } = route.params;
+    //const { title, releaseYear } = route.params;
+    console.log(route.params);
 
 return (
     <View style={styles.container}>
