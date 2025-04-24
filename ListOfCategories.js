@@ -17,7 +17,7 @@ const categorys = [
         renderItem={({item}) =>   
           <View style = {styles.border}>
             <TouchableOpacity onPress={()=>navigation.navigate("Questions",item.category)}>
-            <Text style={styles.item}>{item.category} </Text>
+            <Text style={styles.itemText}>{item.category} </Text>
             </TouchableOpacity>
           </View> 
         }
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
      paddingTop: 50,
      flex: 1,
      backgroundColor: "white",
+     marginVertical: 100
     },
     item: {
       padding: 10,
@@ -41,6 +42,13 @@ const styles = StyleSheet.create({
     border: {
       borderWidth: 1,
       borderColor: "gray",
+      borderRadius: 40
+    },
+    itemText: {
+      fontSize: 40,
+      color: '#333',
+      textAlign: 'center',
+      margin: 20,
     }
   });  
 

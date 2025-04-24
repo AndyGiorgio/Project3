@@ -30,4 +30,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  itemText: {
+    fontSize: 18,
+    color: '#333',
+    textAlign: 'center'
+  }
 });
