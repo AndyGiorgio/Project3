@@ -6,32 +6,27 @@ const ListOfCategories = ({ route, navigation }) => {
 const startingDataSource = [
     { category: "Math" },
     { category: "Science" },
-    { categroy: "History" },
+    { category: "History" },
     { category: "Geography" },
   ];
 
-  const [categories, setCategory] = useState(startingDataSource);
-  useEffect(()=>{
-        if(route.params){
-          setCategory(categories.concat(json.categories));
-        }
-      }, [route.params]);
+  const [categories, setCategory] = useState("");
          
   return (
     <View style={styles.container}>
                 <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                data={categories}
+                data={startingDataSource}
                 renderItem={({item}) => 
-                <TouchableOpacity onPress={() => navigation.navigate('Questions')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Questions', item.category)}>
                   <View style={styles.border}>
-                    <Text style={styles.item}>{item.title}</Text>
+                    <Text style={styles.item}>{item.category}</Text>
                   </View>
                 </TouchableOpacity>
                 } />
             </View>
   );
 }
+
 
 const styles = StyleSheet.create({
     container: {
