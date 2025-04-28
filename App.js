@@ -14,10 +14,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
             headerBackVisible: false,
-            //gestureEnabled: false
+            gestureEnabled: false
           }}>
-        <Stack.Screen name="ListOfCategories" component={ListOfCategories} />
-        <Stack.Screen name="Questions" component={Questions} />
+        <Stack.Screen name="ListOfCategories" component={ListOfCategories} options = {{headerShown: false}}/>
+        <Stack.Screen name="Questions" component={Questions} options = {{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -29,10 +29,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  itemText: {
-    fontSize: 18,
-    color: '#333',
-    textAlign: 'center'
   }
 });

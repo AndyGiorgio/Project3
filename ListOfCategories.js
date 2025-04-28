@@ -1,55 +1,80 @@
-import React, { useEffect, useState } from 'react';
-import { Button, TouchableOpacity, FlatList, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const ListOfCategories = ({ route, navigation }) => {
-
-const categorys = [
-    { category: "Math" },
-    { category: "Science" },
-    { category: "History" },
-    { category: "Geography" },
+const ListOfCategories = ({ navigation, route }) => {
+  const categorys = [
+    {category: "Math"},
+    {category: "Science"},
+    {category: "History"},
+    {category: "Geography"},
+    {category: "Sports"},
+    {category: "General"}
   ];
+
+  const score = route.params?.score || 0;
+  const strikes = route.params?.strikes || 0;
+
+  const ItemSeparator = () => {
+    return <View style={styles.separator} />;
+  };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.scoreText}>Score: {score} | Strikes: {strikes}</Text>
+      <Text style={styles.title}>Choose a Category</Text>
+
       <FlatList
         data={categorys}
-        renderItem={({item}) =>   
-          <View style = {styles.border}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Questions",item.category)}>
-            <Text style={styles.itemText}>{item.category} </Text>
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => (
+          <View style={styles.border}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Questions', { category: item.category, score, strikes })}
+            >
+              <Text style={styles.itemText}>{item.category}</Text>
             </TouchableOpacity>
-          </View> 
-        }
+          </View>
+        )}
       />
     </View>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
-    container: {
-     paddingTop: 50,
-     flex: 1,
-     backgroundColor: "white",
-     marginVertical: 100
-    },
-    item: {
-      padding: 10,
-      fontSize: 24,
-      height: 54,
-    },
-    border: {
-      borderWidth: 1,
-      borderColor: "gray",
-      borderRadius: 40
-    },
-    itemText: {
-      fontSize: 40,
-      color: '#333',
-      textAlign: 'center',
-      margin: 20,
-    }
-  });  
+  container: {
+    paddingTop: 50,
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: 'purple',
+    textAlign: 'center',
+  },
+  border: {
+    borderWidth: 2,
+    borderColor: "purple",
+    borderRadius: 20,
+    padding: 10,
+    width: 300,
+    alignSelf: 'center',
+  },
+  itemText: {
+    fontSize: 30,
+    color: '#333',
+    textAlign: 'center',
+    margin: 10,
+  },
+  separator: {
+    height: 20,
+  },
+  scoreText: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+});
 
 export default ListOfCategories;
