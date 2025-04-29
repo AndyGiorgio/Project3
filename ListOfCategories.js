@@ -2,6 +2,8 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 const ListOfCategories = ({ navigation, route }) => {
+  const { difficulty } = route.params;
+
   const categorys = [
     {category: "Math"},
     {category: "Science"},
@@ -11,7 +13,12 @@ const ListOfCategories = ({ navigation, route }) => {
     {category: "General"}
   ];
 
+  const highScore1 = route.params?.highScore1;
+  const highScore2 = route.params?.highScore2;
+  const highScore3 = route.params?.highScore3;
+
   const score = route.params?.score || 0;
+  const highScore = route.params?.highScore || 0;
   const strikes = route.params?.strikes || 0;
 
   const ItemSeparator = () => {
@@ -29,7 +36,7 @@ const ListOfCategories = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <View style={styles.border}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Questions', { category: item.category, score, strikes })}
+              onPress={() => navigation.navigate('Questions', { category: item.category, difficulty, highScore, highScore1, highScore2, highScore3, score, strikes })}
             >
               <Text style={styles.itemText}>{item.category}</Text>
             </TouchableOpacity>

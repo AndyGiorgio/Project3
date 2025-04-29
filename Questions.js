@@ -3,22 +3,52 @@ import { FlatList, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from
 import { decode } from 'html-entities';
 
 const categoryLinks = {
-  Math: 'https://opentdb.com/api.php?amount=1&category=19&type=multiple',
-  Science: 'https://opentdb.com/api.php?amount=1&category=17&type=multiple',
-  History: 'https://opentdb.com/api.php?amount=1&category=23&type=multiple',
-  Geography: 'https://opentdb.com/api.php?amount=1&category=22&type=multiple',
-  Sports: 'https://opentdb.com/api.php?amount=1&category=21&type=multiple',
-  General: 'https://opentdb.com/api.php?amount=1&category=9&type=multiple'
-};
+    Math: {
+      Easy: 'https://opentdb.com/api.php?amount=1&category=19&difficulty=easy&type=multiple',
+      Medium: 'https://opentdb.com/api.php?amount=1&category=19&difficulty=medium&type=multiple',
+      Hard: 'https://opentdb.com/api.php?amount=1&category=19&difficulty=hard&type=multiple',
+    },
+    Science: {
+      Easy: 'https://opentdb.com/api.php?amount=1&category=17&difficulty=easy&type=multiple',
+      Medium: 'https://opentdb.com/api.php?amount=1&category=17&difficulty=medium&type=multiple',
+      Hard: 'https://opentdb.com/api.php?amount=1&category=17&difficulty=hard&type=multiple',
+    },
+    History: {
+      Easy: 'https://opentdb.com/api.php?amount=1&category=23&difficulty=easy&type=multiple',
+      Medium: 'https://opentdb.com/api.php?amount=1&category=23&difficulty=medium&type=multiple',
+      Hard: 'https://opentdb.com/api.php?amount=1&category=23&difficulty=hard&type=multiple',
+    },
+    Geography: {
+      Easy: 'https://opentdb.com/api.php?amount=1&category=22&difficulty=easy&type=multiple',
+      Medium: 'https://opentdb.com/api.php?amount=1&category=22&difficulty=medium&type=multiple',
+      Hard: 'https://opentdb.com/api.php?amount=1&category=22&difficulty=hard&type=multiple',
+    },
+    Sports: {
+      Easy: 'https://opentdb.com/api.php?amount=1&category=21&difficulty=easy&type=multiple',
+      Medium: 'https://opentdb.com/api.php?amount=1&category=21&difficulty=medium&type=multiple',
+      Hard: 'https://opentdb.com/api.php?amount=1&category=21&difficulty=hard&type=multiple',
+    },
+    General: {
+      Easy: 'https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple',
+      Medium: 'https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple',
+      Hard: 'https://opentdb.com/api.php?amount=1&category=9&difficulty=hard&type=multiple',
+    }
+  };
 
 const Questions = ({ route, navigation }) => {
+  const difficulty = route.params.difficulty || route.params;
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [choices, setChoices] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(route.params?.score || 0);
+  const [highScore, setHighScore] = useState(route.params?.highScore);
   const [strikes, setStrikes] = useState(route.params?.strikes || 0);
   const [gameOver, setGameOver] = useState(false);
+
+  const highScore1 = route.params?.highScore1;
+  const highScore2 = route.params?.highScore2;
+  const highScore3 = route.params?.highScore3;
 
   //fischer yates algorithm
   function shuffleArray(array) {
@@ -35,8 +65,9 @@ const Questions = ({ route, navigation }) => {
 
     setSelectedAnswer(null);
 
+    const selectedDifficulty = route.params.difficulty || route.params;
     const selectedCategory = route.params.category || route.params;
-    const url = categoryLinks[selectedCategory];
+    const url = categoryLinks[selectedCategory][selectedDifficulty];
 
     if (!url) {
       console.error('No URL for selected category:', selectedCategory);
@@ -70,6 +101,12 @@ const Questions = ({ route, navigation }) => {
     getQuestion();
   }, []);
 
+  useEffect(() => {
+    if (gameOver) {
+      navigation.navigate('GameOver', {difficulty, highScore, highScore1, highScore2, highScore3,});
+    }
+  }, [gameOver]);
+
   function handleSelect(choice) {
     if (selectedAnswer !== null || gameOver) return;
 
@@ -87,6 +124,10 @@ const Questions = ({ route, navigation }) => {
       });
     }
   }
+
+    if (score>highScore) {
+      setHighScore(score)
+    }
 
   const getButtonStyle = (choice) => {
     if (!selectedAnswer) {
@@ -123,7 +164,7 @@ const Questions = ({ route, navigation }) => {
       {selectedAnswer && (
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.navigate('ListOfCategories', { score, strikes })}
+          onPress={() => navigation.navigate('ListOfCategories', { difficulty, highScore, highScore1, highScore2, highScore3, score, strikes })}
         >
           <Text style={styles.backButtonText}>Back to Categories</Text>
         </TouchableOpacity>
