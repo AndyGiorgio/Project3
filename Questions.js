@@ -59,10 +59,9 @@ const Questions = ({ route, navigation }) => {
     }
     return newArray;
   }
-
-  async function getQuestion() {
+  
+  async function getQuestion(retries = 5) {
     if (gameOver) return;
-
     setSelectedAnswer(null);
 
     const selectedDifficulty = route.params.difficulty || route.params;
@@ -78,8 +77,17 @@ const Questions = ({ route, navigation }) => {
       const response = await fetch(url);
       const json = await response.json();
 
-      if (json.response_code !== 0 || !json.results || json.results.length === 0) {
-        console.error('Error fetching question');
+      if (json.response_code !== 0) {
+        if (retries > 0) {
+          return getQuestion(retries - 1);
+        } else {
+          console.error('Failed to fetch question after retries.');
+          return;
+        }
+      }
+
+      if (!json.results || json.results.length === 0) {
+        console.error('No question data found!');
         return;
       }
 
